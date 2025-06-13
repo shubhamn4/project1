@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 
 interface FloatingFruitProps {
   src: string;
@@ -10,9 +11,9 @@ interface FloatingFruitProps {
 }
 
 const sizeClasses = {
-  sm: "w-12 h-12 md:w-16 md:h-16",
-  md: "w-16 h-16 md:w-24 md:h-24",
-  lg: "w-24 h-24 md:w-32 md:h-32 lg:w-40 lg:h-40",
+  sm: "w-8 h-8 sm:w-12 sm:h-12 md:w-16 md:h-16",
+  md: "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24",
+  lg: "w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40",
 };
 
 export const FloatingFruit = ({
@@ -23,6 +24,59 @@ export const FloatingFruit = ({
   animationDelay = 0,
   rotation = 0,
 }: FloatingFruitProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
+
+  if (imageError) {
+    return (
+      <motion.div
+        className={`absolute ${sizeClasses[size]} ${className}`}
+        initial={{
+          opacity: 0,
+          scale: 0,
+          rotate: rotation,
+        }}
+        animate={{
+          opacity: 0.7,
+          scale: 1,
+          y: [0, -15, 0],
+          rotate: [rotation, rotation + 3, rotation],
+        }}
+        transition={{
+          opacity: { duration: 0.8, delay: animationDelay },
+          scale: { duration: 0.8, delay: animationDelay },
+          y: {
+            duration: 3,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: animationDelay,
+          },
+          rotate: {
+            duration: 4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: animationDelay,
+          },
+        }}
+      >
+        <div
+          className="w-full h-full rounded-full bg-gradient-to-br from-pink-400 to-red-500 shadow-lg"
+          style={{
+            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.3))",
+          }}
+        />
+      </motion.div>
+    );
+  }
+
   return (
     <motion.div
       className={`absolute ${sizeClasses[size]} ${className}`}
@@ -32,10 +86,10 @@ export const FloatingFruit = ({
         rotate: rotation,
       }}
       animate={{
-        opacity: 1,
+        opacity: imageLoaded ? 1 : 0.7,
         scale: 1,
-        y: [0, -20, 0],
-        rotate: [rotation, rotation + 5, rotation],
+        y: [0, -15, 0],
+        rotate: [rotation, rotation + 3, rotation],
       }}
       transition={{
         opacity: { duration: 0.8, delay: animationDelay },
@@ -53,14 +107,31 @@ export const FloatingFruit = ({
           delay: animationDelay,
         },
       }}
+      whileHover={{
+        scale: 1.1,
+        transition: { duration: 0.2 },
+      }}
     >
+      {!imageLoaded && (
+        <div
+          className="absolute inset-0 rounded-full bg-gradient-to-br from-pink-400 to-red-500 animate-pulse"
+          style={{
+            filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.3))",
+          }}
+        />
+      )}
       <img
         src={src}
         alt={alt}
-        className="w-full h-full object-cover rounded-full drop-shadow-lg"
+        className={`w-full h-full object-cover rounded-full transition-opacity duration-300 ${
+          imageLoaded ? "opacity-100" : "opacity-0"
+        }`}
         style={{
-          filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.3))",
+          filter: "drop-shadow(0 8px 16px rgba(0,0,0,0.3))",
         }}
+        onLoad={handleImageLoad}
+        onError={handleImageError}
+        loading="lazy"
       />
     </motion.div>
   );
