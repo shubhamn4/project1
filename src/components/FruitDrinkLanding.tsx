@@ -1,11 +1,52 @@
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { Header } from "./Header";
 import { FruitSlider } from "./FruitSlider";
 import { FloatingFruit } from "./FloatingFruit";
 
 export const FruitDrinkLanding = () => {
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    // Simulate component mounting and initial load
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            background:
+              "radial-gradient(50% 50% at 50% 50%, #D5D4D4 0%, rgba(237, 15, 82, 0.91) 100%)",
+          }}
+        />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="relative z-10 text-center"
+        >
+          <div className="text-white font-lobster text-4xl md:text-6xl mb-4">
+            Fruite
+          </div>
+          <div className="w-8 h-8 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto"></div>
+        </motion.div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen overflow-hidden relative">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="min-h-screen overflow-hidden relative"
+    >
       {/* Radial gradient background */}
       <div
         className="absolute inset-0 w-full h-full"
@@ -135,8 +176,8 @@ export const FruitDrinkLanding = () => {
       <div className="absolute inset-0 pointer-events-none">
         <motion.div
           animate={{
-            opacity: [0.2, 0.4, 0.2],
-            scale: [1, 1.1, 1],
+            opacity: [0.15, 0.3, 0.15],
+            scale: [1, 1.05, 1],
           }}
           transition={{
             duration: 4,
@@ -148,8 +189,8 @@ export const FruitDrinkLanding = () => {
 
         <motion.div
           animate={{
-            opacity: [0.1, 0.3, 0.1],
-            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.25, 0.1],
+            scale: [1, 1.15, 1],
           }}
           transition={{
             duration: 5,
@@ -162,8 +203,8 @@ export const FruitDrinkLanding = () => {
 
         <motion.div
           animate={{
-            opacity: [0.1, 0.2, 0.1],
-            scale: [1, 1.05, 1],
+            opacity: [0.05, 0.15, 0.05],
+            scale: [1, 1.08, 1],
           }}
           transition={{
             duration: 6,
@@ -174,6 +215,11 @@ export const FruitDrinkLanding = () => {
           className="absolute top-1/2 right-1/2 w-20 h-20 md:w-28 md:h-28 bg-red-400/15 rounded-full blur-2xl"
         />
       </div>
-    </div>
+
+      {/* Performance indicator - remove in production */}
+      <div className="absolute bottom-4 right-4 text-white/50 text-xs font-mono z-50 hidden">
+        FPS: Optimized
+      </div>
+    </motion.div>
   );
 };
