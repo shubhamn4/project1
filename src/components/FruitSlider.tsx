@@ -27,7 +27,7 @@ const fruits = [
   },
   {
     name: "APPLE",
-    color: "#0FB",
+    color: "#00FFBB",
     bgImage:
       "https://images.pexels.com/photos/8970749/pexels-photo-8970749.jpeg",
   },
