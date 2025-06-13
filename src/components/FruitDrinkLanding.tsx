@@ -52,19 +52,67 @@ export const FruitDrinkLanding = () => {
       transition={{ duration: 0.5 }}
       className="min-h-screen overflow-hidden relative"
     >
-      {/* Radial gradient background */}
-      <div
-        className="absolute inset-0 w-full h-full"
-        style={{
-          background:
-            "radial-gradient(50% 50% at 50% 50%, #D5D4D4 0%, rgba(237, 15, 82, 0.91) 100%)",
-        }}
-      />
+      {/* Dynamic radial gradient background */}
+      <AnimatePresence mode="wait">
+        {currentFruit && (
+          <motion.div
+            key={currentFruit.name}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
+            className="absolute inset-0 w-full h-full"
+            style={{
+              background: `radial-gradient(50% 50% at 50% 50%, #D5D4D4 0%, ${currentFruit.backgroundColor} 100%)`,
+            }}
+          />
+        )}
+      </AnimatePresence>
 
-      {/* Additional background elements for depth */}
+      {/* Fallback background for initial load */}
+      {!currentFruit && (
+        <div
+          className="absolute inset-0 w-full h-full"
+          style={{
+            background:
+              "radial-gradient(50% 50% at 50% 50%, #D5D4D4 0%, rgba(237, 15, 82, 0.91) 100%)",
+          }}
+        />
+      )}
+
+      {/* Enhanced background elements for depth with color transitions */}
       <div className="absolute inset-0 w-full h-full">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-pink-400/20 to-transparent" />
-        <div className="absolute bottom-0 right-0 w-full h-full bg-gradient-to-tl from-red-600/30 to-transparent" />
+        <AnimatePresence mode="wait">
+          {currentFruit && (
+            <motion.div
+              key={`bg-${currentFruit.name}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1, ease: "easeInOut" }}
+              className="absolute inset-0"
+            >
+              <div
+                className="absolute top-0 left-0 w-full h-full"
+                style={{
+                  background: `linear-gradient(135deg, ${currentFruit.backgroundColor}20 0%, transparent 50%)`,
+                }}
+              />
+              <div
+                className="absolute bottom-0 right-0 w-full h-full"
+                style={{
+                  background: `linear-gradient(315deg, ${currentFruit.backgroundColor}30 0%, transparent 50%)`,
+                }}
+              />
+              <div
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full"
+                style={{
+                  background: `radial-gradient(circle, ${currentFruit.backgroundColor}10 0%, transparent 70%)`,
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Header */}
@@ -83,13 +131,13 @@ export const FruitDrinkLanding = () => {
             {currentFruit && (
               <motion.div
                 key={currentFruit.name}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6 }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
                 className="absolute inset-0"
               >
-                {/* Top fruits */}
+                {/* Top fruits with enhanced animations */}
                 <FloatingFruit
                   src={currentFruit.fruitImage}
                   alt={`Fresh ${currentFruit.name.toLowerCase()}`}
@@ -233,55 +281,88 @@ export const FruitDrinkLanding = () => {
         </div>
       </main>
 
-      {/* Subtle light effects */}
+      {/* Enhanced light effects with dynamic colors */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          animate={{
-            opacity: [0.15, 0.3, 0.15],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-          className="absolute top-1/4 left-1/3 w-24 h-24 md:w-32 md:h-32 lg:w-48 lg:h-48 bg-white/10 rounded-full blur-xl"
-        />
+        <AnimatePresence mode="wait">
+          {currentFruit && (
+            <motion.div
+              key={`lights-${currentFruit.name}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+              className="absolute inset-0"
+            >
+              <motion.div
+                animate={{
+                  opacity: [0.1, 0.25, 0.1],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute top-1/4 left-1/3 w-24 h-24 md:w-32 md:h-32 lg:w-48 lg:h-48 rounded-full blur-xl"
+                style={{
+                  backgroundColor: currentFruit.backgroundColor + "20",
+                }}
+              />
 
-        <motion.div
-          animate={{
-            opacity: [0.1, 0.25, 0.1],
-            scale: [1, 1.15, 1],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-          className="absolute bottom-1/3 right-1/4 w-16 h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 bg-pink-300/20 rounded-full blur-xl"
-        />
+              <motion.div
+                animate={{
+                  opacity: [0.05, 0.2, 0.05],
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 1,
+                }}
+                className="absolute bottom-1/3 right-1/4 w-16 h-16 md:w-24 md:h-24 lg:w-36 lg:h-36 rounded-full blur-xl"
+                style={{
+                  backgroundColor: currentFruit.backgroundColor + "30",
+                }}
+              />
 
-        <motion.div
-          animate={{
-            opacity: [0.05, 0.15, 0.05],
-            scale: [1, 1.08, 1],
-          }}
-          transition={{
-            duration: 6,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
-          }}
-          className="absolute top-1/2 right-1/2 w-20 h-20 md:w-28 md:h-28 bg-red-400/15 rounded-full blur-2xl"
-        />
+              <motion.div
+                animate={{
+                  opacity: [0.03, 0.15, 0.03],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 6,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                  delay: 2,
+                }}
+                className="absolute top-1/2 right-1/2 w-20 h-20 md:w-28 md:h-28 rounded-full blur-2xl"
+                style={{
+                  backgroundColor: currentFruit.backgroundColor + "15",
+                }}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Fruit name indicator for current selection */}
+      {/* Enhanced fruit name indicator with color transition */}
       {currentFruit && (
-        <div className="absolute bottom-6 left-6 z-20 text-white/70 text-sm font-roboto">
-          Current: {currentFruit.name}
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="absolute bottom-6 left-6 z-20 text-white/70 text-sm font-roboto bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm"
+        >
+          <span className="flex items-center space-x-2">
+            <span>Current:</span>
+            <span className="font-bold">{currentFruit.name}</span>
+            <div
+              className="w-3 h-3 rounded-full border border-white/30"
+              style={{ backgroundColor: currentFruit.backgroundColor }}
+            />
+          </span>
+        </motion.div>
       )}
     </motion.div>
   );
