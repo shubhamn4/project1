@@ -15,7 +15,7 @@ const fruits: Fruit[] = [
     bgImage:
       "https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=400",
     fruitImage:
-      "https://images.pexels.com/photos/10150447/pexels-photo-10150447.jpeg?auto=compress&cs=tinysrgb&w=300",
+      "https://images.pexels.com/photos/10150447/pexels-photo-10150447.jpeg?auto=compress&cs=tinysrgb&w=400",
   },
   {
     name: "ORANGE",
@@ -23,7 +23,7 @@ const fruits: Fruit[] = [
     bgImage:
       "https://images.pexels.com/photos/793763/pexels-photo-793763.jpeg?auto=compress&cs=tinysrgb&w=400",
     fruitImage:
-      "https://images.pexels.com/photos/17840024/pexels-photo-17840024.jpeg?auto=compress&cs=tinysrgb&w=300",
+      "https://images.pexels.com/photos/17840024/pexels-photo-17840024.jpeg?auto=compress&cs=tinysrgb&w=400",
   },
   {
     name: "MUDAPPLE",
@@ -31,7 +31,7 @@ const fruits: Fruit[] = [
     bgImage:
       "https://images.pexels.com/photos/8970749/pexels-photo-8970749.jpeg?auto=compress&cs=tinysrgb&w=400",
     fruitImage:
-      "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=300",
+      "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=400",
   },
   {
     name: "CRANBERRY",
@@ -39,7 +39,7 @@ const fruits: Fruit[] = [
     bgImage:
       "https://images.pexels.com/photos/9092660/pexels-photo-9092660.jpeg?auto=compress&cs=tinysrgb&w=400",
     fruitImage:
-      "https://images.pexels.com/photos/24743545/pexels-photo-24743545.jpeg?auto=compress&cs=tinysrgb&w=300",
+      "https://images.pexels.com/photos/24743545/pexels-photo-24743545.jpeg?auto=compress&cs=tinysrgb&w=400",
   },
   {
     name: "APPLE",
@@ -47,7 +47,7 @@ const fruits: Fruit[] = [
     bgImage:
       "https://images.pexels.com/photos/8970749/pexels-photo-8970749.jpeg?auto=compress&cs=tinysrgb&w=400",
     fruitImage:
-      "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=300",
+      "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=400",
   },
 ];
 
