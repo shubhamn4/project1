@@ -1,40 +1,61 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const fruits = [
+export interface Fruit {
+  name: string;
+  color: string;
+  bgImage: string;
+  fruitImage: string;
+}
+
+const fruits: Fruit[] = [
   {
     name: "STRAWBERRY",
     color: "#FF00B7",
     bgImage:
       "https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=400",
+    fruitImage:
+      "https://images.pexels.com/photos/10150447/pexels-photo-10150447.jpeg?auto=compress&cs=tinysrgb&w=300",
   },
   {
     name: "ORANGE",
     color: "#FF7809",
     bgImage:
       "https://images.pexels.com/photos/793763/pexels-photo-793763.jpeg?auto=compress&cs=tinysrgb&w=400",
+    fruitImage:
+      "https://images.pexels.com/photos/17840024/pexels-photo-17840024.jpeg?auto=compress&cs=tinysrgb&w=300",
   },
   {
     name: "MUDAPPLE",
     color: "#8A3C3C",
     bgImage:
       "https://images.pexels.com/photos/8970749/pexels-photo-8970749.jpeg?auto=compress&cs=tinysrgb&w=400",
+    fruitImage:
+      "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=300",
   },
   {
     name: "CRANBERRY",
     color: "#EC8484",
     bgImage:
       "https://images.pexels.com/photos/9092660/pexels-photo-9092660.jpeg?auto=compress&cs=tinysrgb&w=400",
+    fruitImage:
+      "https://images.pexels.com/photos/24743545/pexels-photo-24743545.jpeg?auto=compress&cs=tinysrgb&w=300",
   },
   {
     name: "APPLE",
     color: "#00FFBB",
     bgImage:
       "https://images.pexels.com/photos/8970749/pexels-photo-8970749.jpeg?auto=compress&cs=tinysrgb&w=400",
+    fruitImage:
+      "https://images.pexels.com/photos/102104/pexels-photo-102104.jpeg?auto=compress&cs=tinysrgb&w=300",
   },
 ];
 
-export const FruitSlider = () => {
+interface FruitSliderProps {
+  onFruitChange?: (fruit: Fruit) => void;
+}
+
+export const FruitSlider = ({ onFruitChange }: FruitSliderProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isClient, setIsClient] = useState(false);
 
@@ -46,11 +67,29 @@ export const FruitSlider = () => {
     if (!isClient) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % fruits.length);
+      setCurrentIndex((prev) => {
+        const newIndex = (prev + 1) % fruits.length;
+        if (onFruitChange) {
+          onFruitChange(fruits[newIndex]);
+        }
+        return newIndex;
+      });
     }, 4000);
 
+    // Call onFruitChange immediately for the initial fruit
+    if (onFruitChange) {
+      onFruitChange(fruits[currentIndex]);
+    }
+
     return () => clearInterval(interval);
-  }, [isClient]);
+  }, [isClient, onFruitChange, currentIndex]);
+
+  const handleFruitClick = (index: number) => {
+    setCurrentIndex(index);
+    if (onFruitChange) {
+      onFruitChange(fruits[index]);
+    }
+  };
 
   if (!isClient) {
     return (
@@ -201,7 +240,7 @@ export const FruitSlider = () => {
         {fruits.map((_, index) => (
           <motion.button
             key={index}
-            onClick={() => setCurrentIndex(index)}
+            onClick={() => handleFruitClick(index)}
             className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 ${
               index === currentIndex
                 ? "bg-white shadow-lg"
@@ -215,3 +254,5 @@ export const FruitSlider = () => {
     </div>
   );
 };
+
+export { fruits };

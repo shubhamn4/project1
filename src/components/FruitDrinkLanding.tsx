@@ -1,11 +1,12 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Header } from "./Header";
-import { FruitSlider } from "./FruitSlider";
+import { FruitSlider, Fruit } from "./FruitSlider";
 import { FloatingFruit } from "./FloatingFruit";
 
 export const FruitDrinkLanding = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [currentFruit, setCurrentFruit] = useState<Fruit | null>(null);
 
   useEffect(() => {
     // Simulate component mounting and initial load
@@ -15,6 +16,10 @@ export const FruitDrinkLanding = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleFruitChange = (fruit: Fruit) => {
+    setCurrentFruit(fruit);
+  };
 
   if (!isLoaded) {
     return (
@@ -69,106 +74,162 @@ export const FruitDrinkLanding = () => {
       <main className="relative z-10 flex-1 pt-4 md:pt-8 lg:pt-16 pb-16">
         {/* Fruit Slider */}
         <div className="relative h-[70vh] md:h-[75vh] lg:h-[80vh]">
-          <FruitSlider />
+          <FruitSlider onFruitChange={handleFruitChange} />
         </div>
 
-        {/* Floating fruit decorations - optimized for mobile */}
+        {/* Dynamic floating fruit decorations */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Top strawberries */}
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=200"
-            alt="Fresh strawberry"
-            className="top-20 left-2 md:top-24 md:left-8 lg:top-28 lg:left-12"
-            size="sm"
-            animationDelay={0.5}
-            rotation={15}
-          />
+          <AnimatePresence mode="wait">
+            {currentFruit && (
+              <motion.div
+                key={currentFruit.name}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.6 }}
+                className="absolute inset-0"
+              >
+                {/* Top fruits */}
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="top-20 left-2 md:top-24 md:left-8 lg:top-28 lg:left-12"
+                  size="sm"
+                  animationDelay={0.5}
+                  rotation={15}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=300"
-            alt="Fresh strawberry"
-            className="top-16 right-2 md:top-20 md:right-8 lg:top-24 lg:right-12"
-            size="md"
-            animationDelay={1.0}
-            rotation={-20}
-          />
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="top-16 right-2 md:top-20 md:right-8 lg:top-24 lg:right-12"
+                  size="md"
+                  animationDelay={1.0}
+                  rotation={-20}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          {/* Side strawberries */}
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=150"
-            alt="Fresh strawberry"
-            className="top-1/2 left-1 md:left-4 lg:left-8 transform -translate-y-1/2"
-            size="sm"
-            animationDelay={1.5}
-            rotation={45}
-          />
+                {/* Side fruits */}
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="top-1/2 left-1 md:left-4 lg:left-8 transform -translate-y-1/2"
+                  size="sm"
+                  animationDelay={1.5}
+                  rotation={45}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=200"
-            alt="Fresh strawberry"
-            className="top-1/2 right-1 md:right-4 lg:right-8 transform -translate-y-1/2"
-            size="sm"
-            animationDelay={2.0}
-            rotation={-10}
-          />
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="top-1/2 right-1 md:right-4 lg:right-8 transform -translate-y-1/2"
+                  size="sm"
+                  animationDelay={2.0}
+                  rotation={-10}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          {/* Bottom strawberries */}
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=200"
-            alt="Fresh strawberry"
-            className="bottom-20 left-2 md:bottom-24 md:left-8 lg:bottom-28 lg:left-12"
-            size="sm"
-            animationDelay={2.5}
-            rotation={30}
-          />
+                {/* Bottom fruits */}
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="bottom-20 left-2 md:bottom-24 md:left-8 lg:bottom-28 lg:left-12"
+                  size="sm"
+                  animationDelay={2.5}
+                  rotation={30}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=150"
-            alt="Fresh strawberry"
-            className="bottom-32 left-12 md:bottom-40 md:left-20 lg:bottom-48 lg:left-24"
-            size="sm"
-            animationDelay={3.0}
-            rotation={-45}
-          />
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="bottom-32 left-12 md:bottom-40 md:left-20 lg:bottom-48 lg:left-24"
+                  size="sm"
+                  animationDelay={3.0}
+                  rotation={-45}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=250"
-            alt="Fresh strawberry"
-            className="bottom-24 right-2 md:bottom-28 md:right-8 lg:bottom-32 lg:right-12"
-            size="md"
-            animationDelay={3.5}
-            rotation={60}
-          />
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="bottom-24 right-2 md:bottom-28 md:right-8 lg:bottom-32 lg:right-12"
+                  size="md"
+                  animationDelay={3.5}
+                  rotation={60}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          <FloatingFruit
-            src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=200"
-            alt="Fresh strawberry"
-            className="bottom-40 right-12 md:bottom-48 md:right-20 lg:bottom-56 lg:right-24"
-            size="sm"
-            animationDelay={4.0}
-            rotation={-30}
-          />
+                <FloatingFruit
+                  src={currentFruit.fruitImage}
+                  alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                  className="bottom-40 right-12 md:bottom-48 md:right-20 lg:bottom-56 lg:right-24"
+                  size="sm"
+                  animationDelay={4.0}
+                  rotation={-30}
+                  fruitType={currentFruit.name.toLowerCase()}
+                />
 
-          {/* Additional decorative strawberries - hidden on very small screens */}
-          <div className="hidden sm:block">
-            <FloatingFruit
-              src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=150"
-              alt="Fresh strawberry"
-              className="top-1/3 left-1/4 transform -translate-x-1/2"
-              size="sm"
-              animationDelay={4.5}
-              rotation={90}
-            />
+                {/* Additional decorative fruits - hidden on very small screens */}
+                <div className="hidden sm:block">
+                  <FloatingFruit
+                    src={currentFruit.fruitImage}
+                    alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                    className="top-1/3 left-1/4 transform -translate-x-1/2"
+                    size="sm"
+                    animationDelay={4.5}
+                    rotation={90}
+                    fruitType={currentFruit.name.toLowerCase()}
+                  />
 
-            <FloatingFruit
-              src="https://images.pexels.com/photos/1788912/pexels-photo-1788912.jpeg?auto=compress&cs=tinysrgb&w=150"
-              alt="Fresh strawberry"
-              className="top-2/3 right-1/4 transform translate-x-1/2"
-              size="sm"
-              animationDelay={5.0}
-              rotation={-60}
-            />
-          </div>
+                  <FloatingFruit
+                    src={currentFruit.fruitImage}
+                    alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                    className="top-2/3 right-1/4 transform translate-x-1/2"
+                    size="sm"
+                    animationDelay={5.0}
+                    rotation={-60}
+                    fruitType={currentFruit.name.toLowerCase()}
+                  />
+
+                  {/* Extra decorative fruits for larger screens */}
+                  <div className="hidden lg:block">
+                    <FloatingFruit
+                      src={currentFruit.fruitImage}
+                      alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                      className="top-1/4 left-1/2 transform -translate-x-1/2"
+                      size="lg"
+                      animationDelay={5.5}
+                      rotation={120}
+                      fruitType={currentFruit.name.toLowerCase()}
+                    />
+
+                    <FloatingFruit
+                      src={currentFruit.fruitImage}
+                      alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                      className="bottom-1/4 left-1/3 transform -translate-x-1/2"
+                      size="md"
+                      animationDelay={6.0}
+                      rotation={-120}
+                      fruitType={currentFruit.name.toLowerCase()}
+                    />
+
+                    <FloatingFruit
+                      src={currentFruit.fruitImage}
+                      alt={`Fresh ${currentFruit.name.toLowerCase()}`}
+                      className="top-3/4 right-1/3 transform translate-x-1/2"
+                      size="sm"
+                      animationDelay={6.5}
+                      rotation={75}
+                      fruitType={currentFruit.name.toLowerCase()}
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </main>
 
@@ -216,10 +277,12 @@ export const FruitDrinkLanding = () => {
         />
       </div>
 
-      {/* Performance indicator - remove in production */}
-      <div className="absolute bottom-4 right-4 text-white/50 text-xs font-mono z-50 hidden">
-        FPS: Optimized
-      </div>
+      {/* Fruit name indicator for current selection */}
+      {currentFruit && (
+        <div className="absolute bottom-6 left-6 z-20 text-white/70 text-sm font-roboto">
+          Current: {currentFruit.name}
+        </div>
+      )}
     </motion.div>
   );
 };
